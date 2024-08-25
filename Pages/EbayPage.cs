@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace WebDriverEbayPom.Pages
 {
-    public class HomePage
+    public class EbayPage
     {
-        private  WebDriver driver;
+        private readonly WebDriver driver;
         private const string baseUrl = "https://www.ebay.com/";
 
-        public HomePage(WebDriver driver)
+        public EbayPage(WebDriver driver)
         {
             this.driver = driver;
         }
@@ -22,7 +22,6 @@ namespace WebDriverEbayPom.Pages
         public IWebElement CategoryDropdown => driver.FindElement(By.Id("gh-cat"));
         public IWebElement SearchField => driver.FindElement(By.Id("gh-ac"));
         public IWebElement SearchButton => driver.FindElement(By.Id("gh-btn"));
-
         public IWebElement FirstSearchResult => driver.FindElement(By.XPath("(//span[@role='heading'])[3]"));
         public IWebElement SecondSearchResult => driver.FindElement(By.XPath("(//span[@role='heading'])[4]"));
         public IWebElement ThirdSearchResult => driver.FindElement(By.XPath("(//span[@role='heading'])[5]"));
@@ -32,6 +31,13 @@ namespace WebDriverEbayPom.Pages
         public IWebElement FirstResultShippingLabel => driver.FindElement(By.XPath("(//span[@class='s-item__shipping s-item__logisticsCost'])[1]"));
         public IWebElement SecondResultShippingLabel => driver.FindElement(By.XPath("(//span[@class='s-item__shipping s-item__logisticsCost'])[2]"));
         public IWebElement ThirdtResultShippingLabel => driver.FindElement(By.XPath("(//span[@class='s-item__shipping s-item__logisticsCost'])[3]"));
+        public IWebElement ItemTitle => driver.FindElement(By.CssSelector("h1 > span"));
+        public IWebElement ItemPrice => driver.FindElement(By.CssSelector("div.x-price-primary > span"));
+        public IWebElement QtyTextBox => driver.FindElement(By.Id("qtyTextBox"));
+        public IWebElement AddToCartButton => driver.FindElement(By.Id("atcBtn_btn_1"));
+        public IWebElement OrderQuantityDropdown => driver.FindElement(By.XPath("(//select[@data-test-id='qty-dropdown'])[1]"));
+        public IWebElement TotalAmountText => driver.FindElement(By.CssSelector("div.item-price.font-title-3 > span > span > span"));
+
 
         public void Open()
         {
@@ -112,6 +118,39 @@ namespace WebDriverEbayPom.Pages
         public void ClickFirstSearchResult()
         {
             FirstSearchResult.Click();
+        }
+
+        public string GetItemTitleText()
+        {
+            return ItemTitle.Text;
+        }
+
+        public string GetItemPriceText()
+        {
+            return ItemPrice.Text;
+        }
+
+        public void FillItemQty(string quantity)
+        {
+            QtyTextBox.Clear();
+            QtyTextBox.SendKeys(quantity);
+        }
+
+        public void clickAddToCartButton()
+        {
+            AddToCartButton.Click();
+        }
+
+        public string GetSelectedQuantittyInDropdown()
+        {
+            var selectElement = new SelectElement(OrderQuantityDropdown);
+            var selectedQty = selectElement.SelectedOption;
+            return selectedQty.Text;
+        }
+
+        public string GetTotalValueText()
+        {
+            return TotalAmountText.Text;
         }
     }
 }
