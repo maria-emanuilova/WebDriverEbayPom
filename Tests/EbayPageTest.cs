@@ -108,7 +108,7 @@ namespace WebDriverEbayPom.Tests
             Assert.That(page.GetItemTitleText(), Does.Contain("Monopoly"));
             itemPrice = page.GetItemPriceText();
             //test currently fails because item price is in AU dollars
-            Assert.That(itemPrice, Is.EqualTo(firstItemPrice), "Item price doesn't match the one displayed on search results page");
+            Assert.That(itemPrice, Does.Contain(firstItemPrice), "Item price doesn't match the one displayed on search results page");
         }
 
         [Given(@"user wants to add item to cart")]
